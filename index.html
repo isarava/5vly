@@ -34,23 +34,34 @@ body {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  margin: 0;
+}
+
+/* ===== SCALE WRAPPER ===== */
+.scale-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
 /* ===== SLIDE CONTAINER ===== */
 .deck {
-  width: 100vw;
-  height: 100vh;
+  width: 1280px;
+  height: 720px;
   position: relative;
+  transform-origin: top left;
+  flex-shrink: 0;
 }
 
 .slide {
   position: absolute;
   top: 0; left: 0;
-  width: 100%; height: 100%;
+  width: 1280px; height: 720px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4vh 6vw;
+  padding: 30px 80px;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -814,7 +825,7 @@ h2 {
 
 /* ===== NAVIGATION ===== */
 .nav-bar {
-  position: fixed;
+  position: absolute;
   bottom: 0; left: 0; right: 0;
   background: rgba(11,26,46,0.95);
   backdrop-filter: blur(12px);
@@ -857,7 +868,7 @@ h2 {
 }
 
 .progress-bar {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
   height: 3px;
   background: var(--teal);
@@ -952,7 +963,7 @@ h2 {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
-  .slide { padding: 3vh 4vw; }
+  .slide { padding: 20px 50px; }
   .steps-flow { grid-template-columns: repeat(2, 1fr); }
   .adv-grid { grid-template-columns: 1fr; }
   .comp-columns { grid-template-columns: 1fr; }
@@ -966,9 +977,10 @@ h2 {
 </head>
 <body>
 
-<div class="progress-bar" id="progress"></div>
-
+<div class="scale-wrapper" id="scaleWrapper">
 <div class="deck" id="deck">
+
+<div class="progress-bar" id="progress"></div>
 
 <!-- ===== SLIDE 1: TITLE ===== -->
 <div class="slide bg-dark active" data-slide="1">
@@ -1129,47 +1141,47 @@ h2 {
 <!-- ===== SLIDE 5: PRODUCT WALKTHROUGH ===== -->
 <div class="slide bg-dark" data-slide="5">
   <div class="geo-accent-tr"></div>
-  <div style="display:flex;flex-direction:column;height:85vh;justify-content:center;">
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;box-sizing:border-box;">
     <div class="label fade-up">Product in Action</div>
-    <h2 class="fade-up fade-up-1" style="margin-bottom:0.75rem;">Live verification — 34 steps in 30 seconds.</h2>
+    <h2 class="fade-up fade-up-1" style="margin-bottom:0.5rem;font-size:1.5rem;">Live verification — 34 steps in 30 seconds.</h2>
     
-    <div style="display:flex;gap:1.5rem;flex:1;min-height:0;" class="fade-up fade-up-2">
+    <div style="display:flex;gap:1.2rem;flex:1;min-height:0;max-height:480px;" class="fade-up fade-up-2">
       <div style="flex:1;display:flex;flex-direction:column;">
         <div style="flex:1;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.3);position:relative;min-height:0;">
-          <div style="background:#f0f0f0;padding:5px 10px;display:flex;align-items:center;gap:5px;border-bottom:1px solid #ddd;">
-            <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></div>
-            <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></div>
-            <div style="width:8px;height:8px;border-radius:50%;background:#28c840;"></div>
-            <div style="flex:1;background:#fff;border-radius:3px;padding:2px 6px;margin-left:6px;font-size:0.6rem;color:#999;font-family:'JetBrains Mono',monospace;" id="demoUrl">business.shvely.com</div>
+          <div style="background:#f0f0f0;padding:4px 10px;display:flex;align-items:center;gap:5px;border-bottom:1px solid #ddd;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#ff5f57;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#febc2e;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#28c840;"></div>
+            <div style="flex:1;background:#fff;border-radius:3px;padding:2px 6px;margin-left:6px;font-size:0.55rem;color:#999;font-family:'JetBrains Mono',monospace;" id="demoUrl">business.shvely.com</div>
           </div>
-          <img id="demoImg" src="" alt="Demo" style="width:100%;height:calc(100% - 28px);object-fit:contain;background:#fafafa;display:block;">
+          <img id="demoImg" src="" alt="Demo" style="width:100%;height:calc(100% - 26px);object-fit:contain;background:#fafafa;display:block;">
         </div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.4rem;">
-          <div style="flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
+          <div style="flex:1;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;">
             <div id="demoProgress" style="height:100%;background:var(--teal);width:0%;transition:width 0.3s;border-radius:2px;"></div>
           </div>
-          <span id="demoCounter" style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--med-gray);min-width:50px;text-align:right;">0 / 34</span>
+          <span id="demoCounter" style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--med-gray);min-width:50px;text-align:right;">0 / 34</span>
         </div>
       </div>
 
-      <div style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:0.5rem;">
-        <div style="background:var(--navy-mid);border-radius:8px;padding:0.6rem;border-left:3px solid var(--teal);">
-          <div style="font-size:0.6rem;letter-spacing:0.1em;color:var(--teal);font-weight:600;margin-bottom:0.25rem;">CURRENT STEP</div>
-          <div id="demoLabel" style="font-size:0.8rem;font-weight:600;color:var(--white);min-height:2em;line-height:1.4;">Bank admin login</div>
+      <div style="width:185px;flex-shrink:0;display:flex;flex-direction:column;gap:0.4rem;">
+        <div style="background:var(--navy-mid);border-radius:8px;padding:0.5rem;border-left:3px solid var(--teal);">
+          <div style="font-size:0.55rem;letter-spacing:0.1em;color:var(--teal);font-weight:600;margin-bottom:0.2rem;">CURRENT STEP</div>
+          <div id="demoLabel" style="font-size:0.75rem;font-weight:600;color:var(--white);min-height:1.8em;line-height:1.3;">Bank admin login</div>
         </div>
 
-        <div style="background:var(--navy-mid);border-radius:8px;padding:0.6rem;">
-          <div style="font-size:0.6rem;letter-spacing:0.1em;color:var(--teal);font-weight:600;margin-bottom:0.4rem;">VERIFICATION FLOW</div>
-          <div id="flowSteps" style="display:flex;flex-direction:column;gap:0.2rem;font-size:0.68rem;"></div>
+        <div style="background:var(--navy-mid);border-radius:8px;padding:0.5rem;flex:1;min-height:0;overflow:hidden;">
+          <div style="font-size:0.55rem;letter-spacing:0.1em;color:var(--teal);font-weight:600;margin-bottom:0.3rem;">VERIFICATION FLOW</div>
+          <div id="flowSteps" style="display:flex;flex-direction:column;gap:0.15rem;font-size:0.62rem;"></div>
         </div>
 
-        <div style="display:flex;gap:0.4rem;">
-          <button id="demoPlayBtn" style="flex:1;padding:0.45rem;background:var(--teal);border:none;border-radius:6px;color:white;font-weight:700;cursor:pointer;font-size:0.8rem;">&#9654; Play</button>
-          <button id="demoPauseBtn" style="flex:1;padding:0.45rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:white;cursor:pointer;font-size:0.8rem;">&#9208; Pause</button>
+        <div style="display:flex;gap:0.35rem;">
+          <button id="demoPlayBtn" style="flex:1;padding:0.35rem;background:var(--teal);border:none;border-radius:6px;color:white;font-weight:700;cursor:pointer;font-size:0.75rem;">&#9654; Play</button>
+          <button id="demoPauseBtn" style="flex:1;padding:0.35rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:white;cursor:pointer;font-size:0.75rem;">&#9208; Pause</button>
         </div>
-        <div style="display:flex;gap:0.4rem;">
-          <button id="demoSlowBtn" style="flex:1;padding:0.3rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--med-gray);cursor:pointer;font-size:0.68rem;">Slow</button>
-          <button id="demoFastBtn" style="flex:1;padding:0.3rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--med-gray);cursor:pointer;font-size:0.68rem;">Fast</button>
+        <div style="display:flex;gap:0.35rem;">
+          <button id="demoSlowBtn" style="flex:1;padding:0.25rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--med-gray);cursor:pointer;font-size:0.62rem;">Slow</button>
+          <button id="demoFastBtn" style="flex:1;padding:0.25rem;background:var(--navy-mid);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--med-gray);cursor:pointer;font-size:0.62rem;">Fast</button>
         </div>
       </div>
     </div>
@@ -1620,8 +1632,6 @@ h2 {
   </div>
 </div>
 
-</div><!-- end deck -->
-
 <!-- ===== NAVIGATION ===== -->
 <div class="nav-bar">
   <div class="slide-counter"><span class="current" id="currentSlide">1</span> / <span id="totalSlides">14</span></div>
@@ -1632,7 +1642,26 @@ h2 {
   </div>
 </div>
 
+</div><!-- end deck -->
+</div><!-- end scale-wrapper -->
+
 <script>
+// Dynamic scaling to fit any screen
+function scaleDeck() {
+  var deck = document.getElementById('deck');
+  var wrapper = document.getElementById('scaleWrapper');
+  var ww = wrapper.clientWidth;
+  var wh = wrapper.clientHeight;
+  var scale = Math.min(ww / 1280, wh / 720);
+  var scaledW = 1280 * scale;
+  var scaledH = 720 * scale;
+  var offsetX = (ww - scaledW) / 2;
+  var offsetY = (wh - scaledH) / 2;
+  deck.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px) scale(' + scale + ')';
+}
+scaleDeck();
+window.addEventListener('resize', scaleDeck);
+
 var current = 1;
 var total = document.querySelectorAll('.slide').length;
 
@@ -1653,7 +1682,6 @@ function goToSlide(n) {
   }
   document.getElementById('currentSlide').textContent = n;
   document.getElementById('progress').style.width = ((n / total) * 100) + '%';
-  // Reset and play demo when entering slide 5, stop when leaving
   if (n === 5 && typeof window.demoReset === 'function') { window.demoReset(); }
   if (n !== 5 && typeof window.demoStop === 'function') { window.demoStop(); }
 }
@@ -1667,12 +1695,17 @@ document.addEventListener('keydown', function(e) {
 });
 
 var touchStartX = 0;
-document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, {passive: true});
 document.addEventListener('touchend', function(e) {
-  var diff = touchStartX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  var diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 50) { diff < 0 ? nextSlide() : prevSlide(); }
+}, {passive: true});
+
+document.querySelector('.deck').addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+  var rect = this.getBoundingClientRect();
+  (e.clientX - rect.left) / rect.width > 0.5 ? nextSlide() : prevSlide();
 });
 </script>
-
 </body>
 </html>
