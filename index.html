@@ -31,47 +31,45 @@ body {
   background: #0a0a0f;
   font-family: 'DM Sans', sans-serif;
   color: var(--white);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
+  scroll-behavior: smooth;
 }
 
 /* ===== SCALE WRAPPER ===== */
 .scale-wrapper {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ===== SLIDE CONTAINER ===== */
 .deck {
-  width: 1280px;
-  height: 720px;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
   position: relative;
-  transform-origin: top left;
-  flex-shrink: 0;
 }
 
 .slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 1280px; height: 720px;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 30px 80px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
+  padding: 60px 80px;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .slide.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
   pointer-events: auto;
 }
 
@@ -825,55 +823,16 @@ h2 {
 
 /* ===== NAVIGATION ===== */
 .nav-bar {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(11,26,46,0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(13,148,136,0.2);
-  padding: 0.6rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
-}
-
-.nav-bar .slide-counter {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--med-gray);
-}
-
-.nav-bar .slide-counter .current { color: var(--teal); font-weight: 700; }
-
-.nav-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.nav-btn {
-  background: rgba(13,148,136,0.15);
-  border: 1px solid rgba(13,148,136,0.3);
-  color: var(--teal);
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-
-.nav-btn:hover {
-  background: var(--teal);
-  color: white;
+  display: none;
 }
 
 .progress-bar {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
   height: 3px;
   background: var(--teal);
   z-index: 101;
-  transition: width 0.3s ease;
+  transition: width 0.15s ease;
 }
 
 /* ===== CALLOUT BAR ===== */
@@ -942,28 +901,26 @@ h2 {
 }
 
 /* ===== ANIMATIONS ===== */
-.slide.active .fade-up {
-  animation: fadeUp 0.5s ease forwards;
-}
-
-.slide.active .fade-up-1 { animation-delay: 0.1s; }
-.slide.active .fade-up-2 { animation-delay: 0.2s; }
-.slide.active .fade-up-3 { animation-delay: 0.3s; }
-.slide.active .fade-up-4 { animation-delay: 0.4s; }
-.slide.active .fade-up-5 { animation-delay: 0.5s; }
-
 .fade-up {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
+
+.fade-up-1 { transition-delay: 0.1s; }
+.fade-up-2 { transition-delay: 0.2s; }
+.fade-up-3 { transition-delay: 0.3s; }
+.fade-up-4 { transition-delay: 0.4s; }
+.fade-up-5 { transition-delay: 0.5s; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
-  .slide { padding: 20px 50px; }
+  .slide { padding: 40px 24px; min-height: auto; }
   .steps-flow { grid-template-columns: repeat(2, 1fr); }
   .adv-grid { grid-template-columns: 1fr; }
   .comp-columns { grid-template-columns: 1fr; }
@@ -977,10 +934,10 @@ h2 {
 </head>
 <body>
 
+<div class="progress-bar" id="progress"></div>
+
 <div class="scale-wrapper" id="scaleWrapper">
 <div class="deck" id="deck">
-
-<div class="progress-bar" id="progress"></div>
 
 <!-- ===== SLIDE 1: TITLE ===== -->
 <div class="slide bg-dark active" data-slide="1">
@@ -991,7 +948,7 @@ h2 {
     <div style="width:60px;height:4px;background:var(--teal);margin-bottom:1.5rem;" class="fade-up fade-up-1"></div>
     <h2 class="fade-up fade-up-2 teal" style="font-weight:400;font-size:clamp(1.2rem,2.5vw,1.8rem);">Cross-Border Financial Identity Infrastructure</h2>
     <p class="subtitle fade-up fade-up-3" style="font-style:italic;margin-top:0.75rem;">We make financial identity portable across borders.</p>
-    <p class="fade-up fade-up-4" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;color:var(--med-gray);margin-top:3rem;">CONFIDENTIAL &nbsp;|&nbsp; PRE-SEED &nbsp;|&nbsp; $2.5M SAFE</p>
+    <p class="fade-up fade-up-4" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;color:var(--med-gray);margin-top:3rem;">CONFIDENTIAL &nbsp;|&nbsp; PRE-SEED &nbsp;|&nbsp; $2.5M to go from signed contracts to $500K ARR — seed-ready in 18 months.</p>
   </div>
 </div>
 
@@ -1000,7 +957,7 @@ h2 {
 <div class="slide bg-light" data-slide="2">
   <div>
     <div class="label fade-up">The Problem</div>
-    <h1 class="fade-up fade-up-1" style="font-size:clamp(1.5rem,3.2vw,2rem);">When people move countries, their financial reputation resets.</h1>
+    <h1 class="fade-up fade-up-1" style="font-size:clamp(1.5rem,3.2vw,2rem);">Every year, millions cross borders and lose something they spent a lifetime building — their financial reputation.</h1>
     <p class="subtitle fade-up fade-up-2" style="max-width:850px;font-size:0.88rem;line-height:1.7;">Credit history, proof of income, and insurance records remain locked inside national systems — even when the underlying behavior hasn't changed. A person can be financially responsible their entire life, move abroad, and overnight become "credit invisible."</p>
     <p class="fade-up fade-up-2" style="font-size:0.82rem;color:var(--dark-text);max-width:850px;margin-top:0.3rem;line-height:1.6;">The problem works in <strong>both directions</strong>. Destination countries can't access foreign financial data. Origin countries can't verify what their emigrated customers report — they receive self-submitted PDFs with no way to authenticate them. Years of perfect financial history, locked on both sides.</p>
 
@@ -1030,7 +987,7 @@ h2 {
 <div class="slide bg-light" data-slide="3">
   <div>
     <div class="label fade-up">Market Size</div>
-    <h2 class="fade-up fade-up-1" style="margin-bottom:0.15rem;font-size:clamp(1.5rem,3.2vw,2.1rem);">304M international migrants — and growing.</h2>
+    <h2 class="fade-up fade-up-1" style="margin-bottom:0.15rem;font-size:clamp(1.5rem,3.2vw,2.1rem);">304 million migrants globally. More than 70% can't carry their financial identity across borders.</h2>
     <p class="subtitle fade-up fade-up-1" style="font-size:0.85rem;max-width:850px;margin-bottom:0.5rem;">Migration has almost doubled since 2000. Add ~40M digital nomads whose finances span borders without formally immigrating.</p>
     
     <!-- BAR CHART + PAM LABEL -->
@@ -1115,7 +1072,7 @@ h2 {
   <div class="geo-accent-tr"></div>
   <div>
     <div class="label fade-up">Our Solution</div>
-    <h2 class="fade-up fade-up-1">A three-layer platform that makes financial identity portable.</h2>
+    <h2 class="fade-up fade-up-1">So we built it — one platform that aggregates, verifies, translates, and transfers financial identity between countries.</h2>
     <p class="subtitle fade-up fade-up-2" style="max-width:850px;">We combine credit portability (translating foreign credit scores), bank data aggregation (connecting bank accounts cross-border via open banking), and a consumer marketplace — all working in both directions. No competitor combines all three.</p>
 
     <div class="steps-flow fade-up fade-up-3" style="margin-top:0.75rem;">
@@ -1141,11 +1098,11 @@ h2 {
 <!-- ===== SLIDE 5: PRODUCT WALKTHROUGH ===== -->
 <div class="slide bg-dark" data-slide="5">
   <div class="geo-accent-tr"></div>
-  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;box-sizing:border-box;">
+  <div style="display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;">
     <div class="label fade-up">Product in Action</div>
-    <h2 class="fade-up fade-up-1" style="margin-bottom:0.5rem;font-size:1.5rem;">Live verification — 34 steps in 30 seconds.</h2>
+    <h2 class="fade-up fade-up-1" style="margin-bottom:0.5rem;font-size:1.5rem;">Here's a live demo of how banks and customers interact through our solution: 15 simple steps in 30 seconds.</h2>
     
-    <div style="display:flex;gap:1.2rem;flex:1;min-height:0;max-height:480px;" class="fade-up fade-up-2">
+    <div style="display:flex;gap:1.2rem;flex:1;min-height:0;max-height:520px;" class="fade-up fade-up-2">
       <div style="flex:1;display:flex;flex-direction:column;">
         <div style="flex:1;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.3);position:relative;min-height:0;">
           <div style="background:#f0f0f0;padding:4px 10px;display:flex;align-items:center;gap:5px;border-bottom:1px solid #ddd;">
@@ -1326,52 +1283,10 @@ h2 {
 </div>
 
 <!-- ===== SLIDE 8: TARGET CORRIDORS ===== -->
-<div class="slide bg-light" data-slide="7">
-  <div>
-    <div class="label fade-up">Target Corridors</div>
-    <h2 class="fade-up fade-up-1">We build where competitors aren't — and can't easily go.</h2>
-    <div class="fade-up fade-up-2" style="margin-top:0.75rem;">
-      <div class="corridor-row" style="border-color:var(--emerald);"><div><span class="badge" style="background:var(--emerald);">Phase 1</span></div><div class="region">CAUCASUS</div><div class="migrants">4M</div><div class="routes">GE → EU, AM → US/FR</div><div class="status emerald">Contracts signed</div></div>
-      <div class="corridor-row" style="border-color:var(--teal);"><div><span class="badge" style="background:var(--teal);">Phase 1</span></div><div class="region">CENTRAL ASIA</div><div class="migrants">7M</div><div class="routes">UZ → KZ, KG → TR</div><div class="status teal">Expansion via TBC & BOG subs</div></div>
-      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 2</span></div><div class="region">UKRAINE</div><div class="migrants">8M</div><div class="routes">UA → PL/DE/CZ</div><div class="status gold">Zero credit portability to EU</div></div>
-      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 2</span></div><div class="region">SOUTH ASIA</div><div class="migrants">18M</div><div class="routes">PK/BD/IN → SA/QA</div><div class="status gold">Zero bureau link Saudi↔S.Asia</div></div>
-      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 3</span></div><div class="region">MENA</div><div class="migrants">12M</div><div class="routes">TR → DE, MA → FR/ES</div><div class="status gold">CCD2 mandate, no infra</div></div>
-    </div>
-    <p class="fade-up fade-up-3" style="font-weight:700;margin-top:0.75rem;color:var(--dark-text);">Total addressable across 13 corridor clusters: ~50M migrants <span style="font-weight:400;font-size:0.82rem;color:var(--med-gray);">(77M gross − 27M exclusions for sanctions/no bureau infrastructure)</span></p>
-  </div>
-</div>
-
-<!-- ===== SLIDE 9: BUSINESS MODEL ===== -->
-<div class="slide bg-dark" data-slide="8">
-  <div>
-    <div class="label fade-up">Business Model</div>
-    <h2 class="fade-up fade-up-1">Four revenue streams. B2B2C model. LTV:CAC > 5:1.</h2>
-    <table class="rev-table fade-up fade-up-2">
-      <tr><th>REVENUE STREAM</th><th>PAYER</th><th>UNIT PRICE</th><th>YEAR 5 MATH</th><th>ARR</th><th>MARGIN</th><th>SHARE</th></tr>
-      <tr><td><strong>Verification Fees</strong></td><td>Banks</td><td>$30/file</td><td style="font-size:0.75rem;color:var(--med-gray);">1M users × 1.67 pulls/yr × $30</td><td class="yr5 teal">$50M</td><td>~50%</td><td>77%</td></tr>
-      <tr><td><strong>Marketplace Leads</strong></td><td>Providers</td><td>$60/lead</td><td style="font-size:0.75rem;color:var(--med-gray);">150K qualified leads × $60</td><td class="yr5" style="color:var(--teal-light);">$9M</td><td>~80%</td><td>14%</td></tr>
-      <tr><td><strong>Bank SaaS</strong></td><td>Banks</td><td>$6K/mo</td><td style="font-size:0.75rem;color:var(--med-gray);">59 banks × $6K × 12 months</td><td class="yr5 mint">$4.2M</td><td>~75%</td><td>6%</td></tr>
-      <tr><td><strong>B2C Subscriptions</strong></td><td>Consumers</td><td>$6/mo</td><td style="font-size:0.75rem;color:var(--med-gray);">1M × 2.5% convert × $6 × 12</td><td class="yr5" style="color:var(--med-gray);">$1.8M</td><td>~65%</td><td>3%</td></tr>
-      <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td></td><td></td><td class="yr5">$65M</td><td>~56%</td><td>100%</td></tr>
-    </table>
-    <div style="display:flex;gap:0.75rem;margin-top:0.5rem;" class="fade-up fade-up-3">
-      <div class="callout" style="border-color:var(--teal);flex:1;">
-        <strong style="color:var(--teal);">KEY ASSUMPTIONS</strong><br>
-        <span style="font-size:0.78rem;">SOM: 1M migrants across 50M addressable (2% penetration) · 59 banks across 13 corridor clusters · Average 1.67 verification pulls per user per year · B2C conversion from free to paid: 2.5%</span>
-      </div>
-      <div class="callout" style="border-color:var(--teal-light);flex:1;">
-        <strong style="color:var(--teal-light);">UNIT ECONOMICS</strong><br>
-        <span style="font-size:0.78rem;">Bank partners bring their own customers — consumer acquisition cost near-zero. B2B bank CAC ~$80-100K against LTV of $500K+ over 5 years. Each bank integration unlocks thousands of end-users at zero marginal cost.</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== SLIDE 7: COMPETITIVE LANDSCAPE (MERGED) ===== -->
 <div class="slide bg-dark" data-slide="6">
   <div>
     <div class="label fade-up">Competitive Landscape</div>
-    <h2 class="fade-up fade-up-1" style="font-size:clamp(1.1rem,2vw,1.5rem);">$1.4B invested across 16 companies. Zero in our corridors.</h2>
+    <h2 class="fade-up fade-up-1" style="font-size:clamp(1.1rem,2vw,1.5rem);">$1.4 billion has been invested trying to solve this — but only in US and EU corridors, leaving 230 million people unserved.</h2>
     
     <div class="fade-up fade-up-2" style="overflow-x:auto;margin-top:0.6rem;">
       <table style="width:100%;border-collapse:collapse;font-size:0.72rem;">
@@ -1421,10 +1336,52 @@ h2 {
   </div>
 </div>
 
+<div class="slide bg-light" data-slide="7">
+  <div>
+    <div class="label fade-up">Target Corridors</div>
+    <h2 class="fade-up fade-up-1">That's exactly where we start: corridors competitors haven't reached, where banks are already asking for this.</h2>
+    <div class="fade-up fade-up-2" style="margin-top:0.75rem;">
+      <div class="corridor-row" style="border-color:var(--emerald);"><div><span class="badge" style="background:var(--emerald);">Phase 1</span></div><div class="region">CAUCASUS</div><div class="migrants">4M</div><div class="routes">GE → EU, AM → US/FR</div><div class="status emerald">Contracts signed</div></div>
+      <div class="corridor-row" style="border-color:var(--teal);"><div><span class="badge" style="background:var(--teal);">Phase 1</span></div><div class="region">CENTRAL ASIA</div><div class="migrants">7M</div><div class="routes">UZ → KZ, KG → TR</div><div class="status teal">Expansion via TBC & BOG subs</div></div>
+      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 2</span></div><div class="region">UKRAINE</div><div class="migrants">8M</div><div class="routes">UA → PL/DE/CZ</div><div class="status gold">Zero credit portability to EU</div></div>
+      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 2</span></div><div class="region">SOUTH ASIA</div><div class="migrants">18M</div><div class="routes">PK/BD/IN → SA/QA</div><div class="status gold">Zero bureau link Saudi↔S.Asia</div></div>
+      <div class="corridor-row" style="border-color:var(--gold);"><div><span class="badge" style="background:var(--gold);">Phase 3</span></div><div class="region">MENA</div><div class="migrants">12M</div><div class="routes">TR → DE, MA → FR/ES</div><div class="status gold">CCD2 mandate, no infra</div></div>
+    </div>
+    <p class="fade-up fade-up-3" style="font-weight:700;margin-top:0.75rem;color:var(--dark-text);">Total addressable across 13 corridor clusters: ~50M migrants <span style="font-weight:400;font-size:0.82rem;color:var(--med-gray);">(77M gross − 27M exclusions for sanctions/no bureau infrastructure)</span></p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: BUSINESS MODEL ===== -->
+<div class="slide bg-dark" data-slide="8">
+  <div>
+    <div class="label fade-up">Business Model</div>
+    <h2 class="fade-up fade-up-1">Banks pay us per verification, per lead, and per monthly SaaS subscription — and bring their own customers to us.</h2>
+    <table class="rev-table fade-up fade-up-2">
+      <tr><th>REVENUE STREAM</th><th>PAYER</th><th>UNIT PRICE</th><th>YEAR 5 MATH</th><th>ARR</th><th>MARGIN</th><th>SHARE</th></tr>
+      <tr><td><strong>Verification Fees</strong></td><td>Banks</td><td>$30/file</td><td style="font-size:0.75rem;color:var(--med-gray);">1M users × 1.67 pulls/yr × $30</td><td class="yr5 teal">$50M</td><td>~50%</td><td>77%</td></tr>
+      <tr><td><strong>Marketplace Leads</strong></td><td>Providers</td><td>$60/lead</td><td style="font-size:0.75rem;color:var(--med-gray);">150K qualified leads × $60</td><td class="yr5" style="color:var(--teal-light);">$9M</td><td>~80%</td><td>14%</td></tr>
+      <tr><td><strong>Bank SaaS</strong></td><td>Banks</td><td>$6K/mo</td><td style="font-size:0.75rem;color:var(--med-gray);">59 banks × $6K × 12 months</td><td class="yr5 mint">$4.2M</td><td>~75%</td><td>6%</td></tr>
+      <tr><td><strong>B2C Subscriptions</strong></td><td>Consumers</td><td>$6/mo</td><td style="font-size:0.75rem;color:var(--med-gray);">1M × 2.5% convert × $6 × 12</td><td class="yr5" style="color:var(--med-gray);">$1.8M</td><td>~65%</td><td>3%</td></tr>
+      <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td></td><td></td><td class="yr5">$65M</td><td>~56%</td><td>100%</td></tr>
+    </table>
+    <div style="display:flex;gap:0.75rem;margin-top:0.5rem;" class="fade-up fade-up-3">
+      <div class="callout" style="border-color:var(--teal);flex:1;">
+        <strong style="color:var(--teal);">KEY ASSUMPTIONS</strong><br>
+        <span style="font-size:0.78rem;">SOM: 1M migrants across 50M addressable (2% penetration) · 59 banks across 13 corridor clusters · Average 1.67 verification pulls per user per year · B2C conversion from free to paid: 2.5%</span>
+      </div>
+      <div class="callout" style="border-color:var(--teal-light);flex:1;">
+        <strong style="color:var(--teal-light);">UNIT ECONOMICS</strong><br>
+        <span style="font-size:0.78rem;">Bank partners bring their own customers — consumer acquisition cost near-zero. B2B bank CAC ~$80-100K against LTV of $500K+ over 5 years. Each bank integration unlocks thousands of end-users at zero marginal cost.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: COMPETITIVE LANDSCAPE (MERGED) ===== -->
 <div class="slide bg-light" data-slide="9">
   <div>
     <div class="label fade-up">Why Now</div>
-    <h2 class="fade-up fade-up-1">Five converging forces creating a once-in-a-decade window.</h2>
+    <h2 class="fade-up fade-up-1">The timing couldn't be better: open banking is scaling, post-COVID mobility is surging, and the EU Regulation CCD2 accelerates the need.</h2>
     <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:1rem;">
       <div class="card fade-up fade-up-1" style="display:grid;grid-template-columns:40px 1fr;gap:1rem;align-items:center;padding:0.75rem 1rem;">
         <span style="font-family:'Space Grotesk';font-size:1.1rem;font-weight:700;color:var(--teal);">01</span>
@@ -1454,12 +1411,12 @@ h2 {
 <div class="slide bg-dark" data-slide="10">
   <div>
     <div class="label fade-up">Why We Win</div>
-    <h2 class="fade-up fade-up-1">Four structural advantages that compound over time.</h2>
+    <h2 class="fade-up fade-up-1">These are markets you can't crack from the outside — fragmented regulations, local languages, relationship-driven cultures.</h2>
     <div class="adv-grid fade-up fade-up-2">
       <div class="adv-card" style="border-color:var(--teal);"><div><span class="adv-num" style="background:var(--teal);">1</span><h3>FOUNDER-MARKET FIT</h3></div><p>17+ years in financial services across 5 continents. Career built inside the exact institutions we sell to — MetLife, Emirates NBD, TBC Bank, Bank of Georgia. Direct relationships with bank CEOs in target markets.</p></div>
       <div class="adv-card" style="border-color:var(--teal-light);"><div><span class="adv-num" style="background:var(--teal-light);">2</span><h3>UNIQUE MODEL COMBINATION</h3></div><p>Credit translation (Nova Credit) + Cashflow aggregation (Plaid) + Cross-border marketplace — bidirectional. No competitor combines all three. Architected for convergence from day one.</p></div>
       <div class="adv-card" style="border-color:var(--gold);"><div><span class="adv-num" style="background:var(--gold);">3</span><h3>COMPLEXITY AS MOAT</h3></div><p>Central Asia, Caucasus, Gulf: fragmented regulations, non-English docs, relationship-driven cultures. Regional expertise = 5-year head start. Too small individually and too complex for well-funded players.</p></div>
-      <div class="adv-card" style="border-color:var(--emerald);"><div><span class="adv-num" style="background:var(--emerald);">4</span><h3>FIRST MOVERS WITH CLIENTS</h3></div><p>Not first movers with a pitch deck — first movers with signed contracts. Banks covering ~78% of Georgian banking. Two contracts = three countries via subsidiaries. 6-12 month switching costs.</p></div>
+      <div class="adv-card" style="border-color:var(--emerald);"><div><span class="adv-num" style="background:var(--emerald);">4</span><h3>FIRST MOVERS WITH CLIENTS</h3></div><p>Not first movers with a pitch deck — first movers with signed contracts. Banks covering ~80% of Georgian banking. Two contracts = three countries via subsidiaries. 6-12 month switching costs.</p></div>
     </div>
   </div>
 </div>
@@ -1468,6 +1425,7 @@ h2 {
 <div class="slide bg-light" data-slide="11">
   <div>
     <div class="label fade-up">Team</div>
+    <h2 class="fade-up fade-up-1">That's why we win: with a founder who spent 17+ years inside these regional banks and a tech team from ex-Microsoft and ex-Roblox.</h2>
     <div class="founder-card fade-up fade-up-1">
       <img src="data:image/jpeg;base64,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" alt="Irakli Sarava" class="founder-photo">
       <div class="founder-info">
@@ -1510,10 +1468,10 @@ h2 {
 <div class="slide bg-light" data-slide="12">
   <div>
     <div class="label fade-up">Traction & Validation</div>
-    <h2 class="fade-up fade-up-1">Pre-revenue, post-contract — ready to execute.</h2>
+    <h2 class="fade-up fade-up-1">Proof, not a promise: two of the country's largest banks signed, ~80% market coverage, expansion into two more countries underway. Go-live: Q2 2026.</h2>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0;" class="fade-up fade-up-2">
       <div class="stat-box"><div class="value">2</div><div class="stat-label">Bank Contracts</div></div>
-      <div class="stat-box"><div class="value">~78%</div><div class="stat-label">Georgian Market Share</div></div>
+      <div class="stat-box"><div class="value">~80%</div><div class="stat-label">Georgian Market Share</div></div>
       <div class="stat-box"><div class="value gold">Q2 '26</div><div class="stat-label">Target Go-Live</div></div>
     </div>
     <div class="fade-up fade-up-3" style="display:flex;flex-direction:column;gap:0.4rem;">
@@ -1535,8 +1493,8 @@ h2 {
 <div class="slide bg-dark" data-slide="13">
   <div>
     <div class="label fade-up">The Ask</div>
-    <h1 class="fade-up fade-up-1" style="font-size:clamp(2.5rem,5vw,3.5rem);">$2.5M SAFE</h1>
-    <p class="subtitle fade-up fade-up-2" style="font-size:1rem;">$12M Cap &nbsp;|&nbsp; 20% Discount &nbsp;|&nbsp; 18-24 months runway → $500K ARR → Seed ready</p>
+    <h1 class="fade-up fade-up-1" style="font-size:clamp(1.5rem,3vw,2.2rem);">$2.5M to go from signed contracts to $500K ARR — seed-ready in 18 months.</h1>
+    <p class="subtitle fade-up fade-up-2" style="font-size:1rem;">SAFE Note &nbsp;|&nbsp; $12M Cap &nbsp;|&nbsp; 20% Discount</p>
     
     <div class="funds-bar fade-up fade-up-3">
       <div style="width:60%;background:var(--teal);">60%</div>
@@ -1563,26 +1521,28 @@ h2 {
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
         <!-- Month 6 -->
         <div style="background:var(--navy-mid);border-radius:8px;padding:0.6rem;border-top:3px solid var(--teal);">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+          <div style="margin-bottom:0.3rem;">
             <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;color:var(--teal);">MONTH 6</span>
-            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);">$80-100K</span>
           </div>
           <div style="font-weight:700;font-size:0.78rem;margin-bottom:0.3rem;">LIVE IN GEORGIA — First Revenue</div>
           <div style="font-size:0.7rem;color:var(--med-gray);line-height:1.5;">
-            TBC + BOG processing verifications (~78% market)<br>
+            TBC + BOG processing verifications (~80% market)<br>
             5,000+ verifications processed<br>
             Pentest & IT audit complete<br>
             Core team: CTO, CPO, Customer Success<br>
             EU corridors ready (Germany & France)
+          </div>
+          <div style="margin-top:0.4rem;padding:0.35rem 0.5rem;background:rgba(13,148,136,0.15);border-radius:5px;border-left:3px solid var(--teal);display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.65rem;font-weight:600;color:var(--teal);letter-spacing:0.08em;">ARR TARGET</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1rem;color:var(--white);">$80-100K</span>
           </div>
           <div style="font-size:0.68rem;color:var(--teal);margin-top:0.3rem;font-style:italic;">→ Product works. Banks trust us. Revenue is real.</div>
         </div>
 
         <!-- Month 12 -->
         <div style="background:var(--navy-mid);border-radius:8px;padding:0.6rem;border-top:3px solid var(--teal-light);">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+          <div style="margin-bottom:0.3rem;">
             <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;color:var(--teal-light);">MONTH 12</span>
-            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);">$200K</span>
           </div>
           <div style="font-weight:700;font-size:0.78rem;margin-bottom:0.3rem;">PRODUCT-MARKET FIT — Repeatable</div>
           <div style="font-size:0.7rem;color:var(--med-gray);line-height:1.5;">
@@ -1592,14 +1552,17 @@ h2 {
             Payme (UZ) + Ameriabank (AM) contracts signed<br>
             Team expanded: Partner RM, B2C Success
           </div>
+          <div style="margin-top:0.4rem;padding:0.35rem 0.5rem;background:rgba(45,212,191,0.12);border-radius:5px;border-left:3px solid var(--teal-light);display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.65rem;font-weight:600;color:var(--teal-light);letter-spacing:0.08em;">ARR TARGET</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1rem;color:var(--white);">$200K</span>
+          </div>
           <div style="font-size:0.68rem;color:var(--teal-light);margin-top:0.3rem;font-style:italic;">→ Not a one-bank story. Expansion playbook works.</div>
         </div>
 
         <!-- Month 18-24 -->
         <div style="background:var(--navy-mid);border-radius:8px;padding:0.6rem;border-top:3px solid var(--mint);">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
+          <div style="margin-bottom:0.3rem;">
             <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;color:var(--mint);">MONTH 18-24</span>
-            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);">$500K+</span>
           </div>
           <div style="font-weight:700;font-size:0.78rem;margin-bottom:0.3rem;">GROWTH READY — Seed Metrics</div>
           <div style="font-size:0.7rem;color:var(--med-gray);line-height:1.5;">
@@ -1609,6 +1572,10 @@ h2 {
             B2C app: 25K+ users, early monetization<br>
             Gulf bank LOIs in hand<br>
             LTV:CAC > 5:1 proven
+          </div>
+          <div style="margin-top:0.4rem;padding:0.35rem 0.5rem;background:rgba(110,231,183,0.12);border-radius:5px;border-left:3px solid var(--mint);display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.65rem;font-weight:600;color:var(--mint);letter-spacing:0.08em;">ARR TARGET</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1rem;color:var(--white);">$500K+</span>
           </div>
           <div style="font-size:0.68rem;color:var(--mint);margin-top:0.3rem;font-style:italic;">→ Clear path to $2-3M ARR. Ready for seed.</div>
         </div>
@@ -1623,8 +1590,8 @@ h2 {
   <div class="geo-accent-bl"></div>
   <div>
     <div class="label fade-up">The Bottom Line</div>
-    <h1 class="fade-up fade-up-1" style="font-size:clamp(1.5rem,3.2vw,2rem);line-height:1.3;">Cross-border financial identity is being built right now.<br>The question is who builds it for the underserved 230 million.</h1>
-    <p class="subtitle fade-up fade-up-2" style="max-width:800px;font-size:0.88rem;line-height:1.65;margin-top:0.8rem;">Nova Credit is US-focused and pivoting toward domestic cashflow data. Mifundo covers only intra-EU. Goscore serves Scandinavian corridors. CreditChek focuses on Africa to US/UK. Each solves a piece — none connects the full picture. 5vly is the only platform architected from day one to be bidirectional, multi-corridor, and built for both B2B and B2C — with signed contracts from two banks covering 78% of our launch market, and a founder who lived the problem and spent 17 years inside the banks we sell to.</p>
+    <h1 class="fade-up fade-up-1" style="font-size:clamp(1.5rem,3.2vw,2rem);line-height:1.3;">Cross-border financial identity will be built. The question is who builds it for the 230 million still waiting.</h1>
+    <p class="subtitle fade-up fade-up-2" style="max-width:800px;font-size:0.88rem;line-height:1.65;margin-top:0.8rem;">Nova Credit is US-focused and pivoting toward domestic cashflow data. Mifundo covers only intra-EU. Goscore serves Scandinavian corridors. CreditChek focuses on Africa to US/UK. Each solves a piece — none connects the full picture. 5vly is the only platform architected from day one to be bidirectional, multi-corridor, and built for both B2B and B2C — with signed contracts from two banks covering ~80% of our launch market, and a founder who lived the problem and spent 17 years inside the banks we sell to.</p>
     <div style="width:80px;height:3px;background:var(--teal);margin:1.5rem 0 0.8rem;" class="fade-up fade-up-3"></div>
     <h2 class="fade-up fade-up-3" style="font-size:1.3rem;">Irakli Sarava</h2>
     <p class="fade-up fade-up-4 teal" style="font-size:0.95rem;">Founder & CEO</p>
@@ -1632,80 +1599,48 @@ h2 {
   </div>
 </div>
 
-<!-- ===== NAVIGATION ===== -->
-<div class="nav-bar">
-  <div class="slide-counter"><span class="current" id="currentSlide">1</span> / <span id="totalSlides">14</span></div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--med-gray);">← → or click to navigate</div>
-  <div class="nav-buttons">
-    <button class="nav-btn" onclick="prevSlide()">← Prev</button>
-    <button class="nav-btn" onclick="nextSlide()">Next →</button>
-  </div>
 </div>
 
 </div><!-- end deck -->
 </div><!-- end scale-wrapper -->
 
 <script>
-// Dynamic scaling to fit any screen
-function scaleDeck() {
-  var deck = document.getElementById('deck');
-  var wrapper = document.getElementById('scaleWrapper');
-  var ww = wrapper.clientWidth;
-  var wh = wrapper.clientHeight;
-  var scale = Math.min(ww / 1280, wh / 720);
-  var scaledW = 1280 * scale;
-  var scaledH = 720 * scale;
-  var offsetX = (ww - scaledW) / 2;
-  var offsetY = (wh - scaledH) / 2;
-  deck.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px) scale(' + scale + ')';
-}
-scaleDeck();
-window.addEventListener('resize', scaleDeck);
-
-var current = 1;
-var total = document.querySelectorAll('.slide').length;
-
-function goToSlide(n) {
-  if (n < 1 || n > total) return;
-  var active = document.querySelector('.slide.active');
-  if (active) active.classList.remove('active');
-  current = n;
-  var target = document.querySelector('[data-slide="' + n + '"]');
-  if (target) {
-    target.classList.add('active');
-    var items = target.querySelectorAll('.fade-up');
-    for (var i = 0; i < items.length; i++) {
-      items[i].style.animation = 'none';
-      items[i].offsetHeight;
-      items[i].style.animation = '';
-    }
-  }
-  document.getElementById('currentSlide').textContent = n;
-  document.getElementById('progress').style.width = ((n / total) * 100) + '%';
-  if (n === 5 && typeof window.demoReset === 'function') { window.demoReset(); }
-  if (n !== 5 && typeof window.demoStop === 'function') { window.demoStop(); }
-}
-
-function nextSlide() { goToSlide(current + 1); }
-function prevSlide() { goToSlide(current - 1); }
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-});
-
-var touchStartX = 0;
-document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, {passive: true});
-document.addEventListener('touchend', function(e) {
-  var diff = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(diff) > 50) { diff < 0 ? nextSlide() : prevSlide(); }
+// Scroll-based progress bar
+var progressBar = document.getElementById('progress');
+window.addEventListener('scroll', function() {
+  var scrollTop = window.scrollY;
+  var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
 }, {passive: true});
 
-document.querySelector('.deck').addEventListener('click', function(e) {
-  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
-  var rect = this.getBoundingClientRect();
-  (e.clientX - rect.left) / rect.width > 0.5 ? nextSlide() : prevSlide();
+// Scroll-triggered fade-in animations
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-up').forEach(function(el) {
+  observer.observe(el);
 });
+
+// Auto-play demo when slide 5 scrolls into view, stop when it leaves
+var demoSlide = document.querySelector('[data-slide="5"]');
+if (demoSlide) {
+  var demoObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (typeof window.demoReset === 'function') window.demoReset();
+      } else {
+        if (typeof window.demoStop === 'function') window.demoStop();
+      }
+    });
+  }, { threshold: 0.4 });
+  demoObserver.observe(demoSlide);
+}
 </script>
 </body>
 </html>
